@@ -43,10 +43,44 @@ namespace sunday_netdisk_backend.Controllers
         }
 
         [HttpGet]
-        [Route("list")]
         public List<FileListVo> GetFileList(string filePath)
         {
             return basicOperationService.GetFileList(authorityService.ProcessPath(filePath));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostCreateDir(string filePath)
+        {
+            await basicOperationService.CreateDir(filePath);
+            return Ok();
+        }
+
+        [HttpPost]
+        public ActionResult PostRenameFile(string filePath, string newName)
+        {
+            basicOperationService.RenameFile(filePath, newName);
+            return Ok();
+        }
+
+        [HttpPost]
+        public ActionResult PostCopyFile(string soursePath, string destinationPath)
+        {
+            basicOperationService.CopyFile(soursePath, destinationPath);
+            return Ok();
+        }
+
+        [HttpPost]
+        public ActionResult PostMoveFile(string soursePath, string destinationPath)
+        {
+            basicOperationService.MoveFile(soursePath, destinationPath);
+            return Ok();
+        }
+
+        [HttpDelete]
+        public ActionResult DeleteFile(string filePath)
+        {
+            basicOperationService.DeleteFile(filePath);
+            return Ok();
         }
 
     }
