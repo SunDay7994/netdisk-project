@@ -8,6 +8,35 @@ namespace sunday_netdisk_backend.Services
 {
     public class BasicOperationService
     {
+        const string root = "D:\\Test";
+        public string ProcessPathDto(string input)
+        {
+            if (input == "/" || input == "" || input == null) 
+                return root;
+
+            input = input.Replace("/", "\\");
+
+            if (input.StartsWith("root"))
+            {
+                input = input.Replace("root", root);
+                return input;
+            }
+            else if (input.StartsWith("/root"))
+            {
+                input = input.Replace("/root", root);
+                return input;
+            }
+            else if (input.StartsWith(root)) return input;
+            else return root;
+        }
+
+        public string ProcessPathVo(string input)
+        {
+            input = input.Replace(root, "/root");
+            input = input.Replace("\\", "/");
+            return input;
+        }
+
         public List<FileListVo> GetFileList(String filePath)
         {
             List<FileListVo> result = new List<FileListVo>();
@@ -22,7 +51,7 @@ namespace sunday_netdisk_backend.Services
 
                 f.FileName = Path.GetFileName(file);
 
-                f.FilePath = file;
+                f.FilePath = ProcessPathVo(file);
 
                 FileInfo fi = new FileInfo(file);
                 f.FileSize = fi.Length;
@@ -40,7 +69,7 @@ namespace sunday_netdisk_backend.Services
 
                 f.FileName = Path.GetFileName(directory);
 
-                f.FilePath = directory;
+                f.FilePath = ProcessPathVo(directory);
 
                 f.FileSize = 0;
 
@@ -54,31 +83,35 @@ namespace sunday_netdisk_backend.Services
             return result;
         }
 
-        public async Task CreateDir(string filePath)
+        public async Task CreateDir(string filePath, string fileName)
         {
-            if (!File.Exists(filePath) && !Directory.Exists(filePath))
+            string newFile = Path.Combine(filePath, fileName);
+            if (!File.Exists(newFile) && !Directory.Exists(newFile))
             {
-                Directory.CreateDirectory(filePath);
+                Directory.CreateDirectory(newFile);
             }
             else
             {
                 int i = 1;
-                string newPath = "";
-                while (File.Exists(filePath) || Directory.Exists(filePath))
+                while (File.Exists(newFile) || Directory.Exists(newFile))
                 {
-                    newPath = filePath + "(" + i++ + ")";
+                    newFile += "(" + i++ + ")";
                     await Task.Yield();
                 }
-                Directory.CreateDirectory(newPath);
+                Directory.CreateDirectory(newFile);
             }
         }
 
-        public void DeleteFile(string fileName)
+        public void DeleteFile(string[] filePaths)
         {
-            if (File.Exists(fileName))
-                File.Delete(fileName);
-            else if (Directory.Exists(fileName))
-                Directory.Delete(fileName, true);
+            foreach(string f in filePaths)
+            {
+                string filePath = ProcessPathDto(f);
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+                else if (Directory.Exists(filePath))
+                    Directory.Delete(filePath, true);
+            }
         }
 
         public void RenameFile(string fileName, string newName)
@@ -99,36 +132,41 @@ namespace sunday_netdisk_backend.Services
             }
         }
 
-        public void CopyFile(string soursePath, string destinationPath)
+        public void CopyFile(string[] soursePaths, string destinationPath)
         {
             {
-                string[] files = Directory.GetFiles(soursePath);
-                string fileName;
-                string destinationFile;
-                if (!Directory.Exists(destinationPath))
+                foreach(string s in soursePaths)
                 {
-                    Directory.CreateDirectory(destinationPath);
-                }
-                foreach (string f in files)
-                {
-                    fileName = Path.GetFileName(f);
-                    destinationFile = Path.Combine(destinationPath, fileName);
-                    File.Copy(f, destinationFile, true);
-                }
+                    string soursePath = ProcessPathDto(s);
+                    string[] files = Directory.GetFiles(soursePath);
+                    string fileName;
+                    string destinationFile;
+                    if (!Directory.Exists(destinationPath))
+                    {
+                        Directory.CreateDirectory(destinationPath);
+                    }
+                    foreach (string f in files)
+                    {
+                        fileName = Path.GetFileName(f);
+                        destinationFile = Path.Combine(destinationPath, fileName);
+                        File.Copy(f, destinationFile, true);
+                    }
 
-                string[] filefolders = Directory.GetFiles(soursePath);
-                DirectoryInfo dirinfo = new DirectoryInfo(soursePath);
-                DirectoryInfo[] subFileFolder = dirinfo.GetDirectories();
-                for (int j = 0; j < subFileFolder.Length; j++)
-                {
-                    string subSourcePath = soursePath + "\\" + subFileFolder[j].ToString();
-                    string subDestinationPath = destinationPath + "\\" + subFileFolder[j].ToString();
-                    CopyFile(subSourcePath, subDestinationPath);
+                    string[] filefolders = Directory.GetFiles(soursePath);
+                    DirectoryInfo dirinfo = new DirectoryInfo(soursePath);
+                    DirectoryInfo[] subFileFolder = dirinfo.GetDirectories();
+                    for (int j = 0; j < subFileFolder.Length; j++)
+                    {
+                        string[] subSourcePath = { soursePath + "\\" + subFileFolder[j].ToString() };
+                        string subDestinationPath = destinationPath + "\\" + subFileFolder[j].ToString();
+                        CopyFile(subSourcePath, subDestinationPath);
+                    }
                 }
+                
             }
         }
 
-        public void MoveFile(string soursePath, string destinationPath)
+        public void MoveFile(string[] soursePath, string destinationPath)
         {
             CopyFile(soursePath, destinationPath);
             DeleteFile(soursePath);

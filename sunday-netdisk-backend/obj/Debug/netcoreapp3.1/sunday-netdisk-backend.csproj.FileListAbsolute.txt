@@ -6,7 +6,6 @@ D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\bin\Debug\netcor
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\bin\Debug\netcoreapp3.1\sunday-netdisk-backend.runtimeconfig.dev.json
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\bin\Debug\netcoreapp3.1\sunday-netdisk-backend.dll
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\bin\Debug\netcoreapp3.1\sunday-netdisk-backend.pdb
-D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.csprojAssemblyReference.cache
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.AssemblyInfoInputs.cache
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.AssemblyInfo.cs
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.csproj.CoreCompileInputs.cache
@@ -18,3 +17,5 @@ D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcor
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.dll
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.pdb
 D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.genruntimeconfig.cache
+D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.csproj.AssemblyReference.cache
+D:\NetdiskProject\sunday-netdisk-backend\sunday-netdisk-backend\obj\Debug\netcoreapp3.1\sunday-netdisk-backend.GeneratedMSBuildEditorConfig.editorconfig

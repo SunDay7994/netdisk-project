@@ -9,6 +9,7 @@ namespace sunday_netdisk_backend.Models
     public class FileDto
     {
         public List<IFormFile> files;
+
         public string filePath;
     }
 }
